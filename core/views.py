@@ -5,16 +5,41 @@ import datetime
 from . import models
 
 
-def index(request):
+def get_all_schools(request):
     schools = models.School.objects.all()
-    return render(request, 'core/index.html', {'schools': schools, 'title': 'Список школ'})
+    context = {
+        'schools': schools,
+        'title': 'Список классов'
+    }
+    return render(request, 'core/index.html', context)
 
 
-def get_teachers(request):
+def get_all_teachers(request):
     teachers = models.Teacher.objects.all()
-    return render(request, 'core/teachers.html', {'teachers': teachers, 'title': 'Список учителей'})
+    context = {
+        'teachers': teachers,
+        'title': 'Список классов'
+    }
+    return render(request, 'core/teachers.html', context)
 
 
-def get_groups(request):
+def get_all_groups(request):
     groups = models.Group.objects.all()
-    return render(request, 'core/groups.html', {'groups': groups, 'title': 'Список классов'})
+    context = {
+        'groups': groups,
+        'title': 'Список классов'
+    }
+    return render(request, 'core/groups.html', context)
+
+
+def get_group(request, group_id):
+    students = models.Student.objects.filter(group=group_id)
+    groups = models.Group.objects.all()
+    group = models.Group.objects.get(pk=group_id)
+
+    context = {
+        'students': students,
+        'groups': groups,
+        'group': group,
+    }
+    return render(request, 'core/group.html', context)
