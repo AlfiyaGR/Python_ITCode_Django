@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 
 
+
 class School(models.Model):
     name = models.CharField('Название', max_length=100)
     address = models.CharField('Адрес', max_length=50, default='address')
@@ -41,6 +42,9 @@ class Group(models.Model):
 
     teacher = models.ForeignKey('Teacher', on_delete=models.CASCADE, null=True)
     school = models.ForeignKey('School', on_delete=models.CASCADE, null=True)
+
+    def get_absolute_url(self):
+        return "/group/%i" % self.pk
 
     class Meta:
         verbose_name = 'Класс'
