@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+<div class="col-md-3">
+    <ul class="list-group">
+        {% for school in schools %}
+        <a href="{% url 'schools' %}" class="list-group-item">{{ school.name }}</a>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    {% for item in schools %}
+    <div class="card text-bg-info mb-3" style="max-width: 18rem;">
+        <div class="card-header"> {{ item.name }}</div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ item.name }} </h5>
+            <p class="card-text"> {{ item.address }} </p>
+            <p class="card-text"> {{ item.contactPhone }} </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

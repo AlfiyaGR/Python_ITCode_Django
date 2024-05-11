@@ -5,13 +5,20 @@ import datetime
 from . import models
 
 
+def index(request):
+    context = {
+        'title': 'Главная'
+    }
+    return render(request, 'core/index.html', context)
+
+
 def get_all_schools(request):
     schools = models.School.objects.all()
     context = {
         'schools': schools,
         'title': 'Список классов'
     }
-    return render(request, 'core/index.html', context)
+    return render(request, 'core/schools.html', context)
 
 
 def get_all_teachers(request):
