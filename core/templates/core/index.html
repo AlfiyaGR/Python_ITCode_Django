@@ -1,26 +1,11 @@
 {% extends 'base.html' %}
 
-{% block sidebar %}
-<div class="col-md-3">
-    <ul class="list-group">
-         <a href="{% url 'schools' %}" class="list-group-item">Школы</a>
-         <a href="{% url 'teachers' %}" class="list-group-item">Учителя</a>
-         <a href="{% url 'groups' %}" class="list-group-item">Классы</a>
-    </ul>
-</div>
-{% endblock %}
-
 {% block content %}
-<div class="col-md-9">
-    <div class="card text-bg-info mb-3" style="max-width: 18rem;">
-        <div class="card-header"> Что-то</div>
-        <div class="card-body">
-            <h5 class="card-title"> Название </h5>
-            <p class="card-text">Описание</p>
-            <p class="card-text"> Приложение </p>
-        </div>
-    </div>
-</div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Войти">
+</form>
 {% endblock %}
 <!--
 <!doctype html>

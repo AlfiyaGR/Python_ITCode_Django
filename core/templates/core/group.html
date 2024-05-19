@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 
 {% block sidebar %}
-<div class="col-md-3">
-    <ul class="list-group">
-        {% for group in groups %}
-        <a href="{{ group.get_absolute_url }}" class="list-group-item">{{ group.name }}</a>
-        {% endfor %}
-    </ul>
-</div>
+{% include 'inc/_teacher_sidebar.html' %}
 {% endblock %}
 
 {% block content %}
@@ -24,3 +18,4 @@
     {% endfor %}
 </div>
 {% endblock %}
+

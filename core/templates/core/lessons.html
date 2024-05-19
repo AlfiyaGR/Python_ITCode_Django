@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card border-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header"> Урок </div>
+                <div class="card-body">
+                    <h5 class="card-title"> {{ lesson.subject.name }} </h5>
+                    <p class="card-text"> {{ lesson.date }} </p>
+                    <p class="card-text"> {{ lesson.subject.name }} </p>
+                    <p class="card-text">
+                        <a href="{% url 'homeworks' lesson.pk %}" class="btn btn-primary"> Домашние работы </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

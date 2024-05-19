@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
+        <div class="card-header"> Расписание </div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ teacher.surname }} {{ teacher.name }} </h5>
+            {% for schedule in schedules %}
+                <p class="card-text"> {{ schedule.date }} </p>
+                <p class="card-text"> {{ schedule.group.name }} </p>
+                <p class="card-text"> {{ schedule.lesson.subject.name }} </p>
+                <p class="card-text"> {{ schedule.lesson.date }} </p>
+                <p class="card-text">
+                    <a href="{% url 'lessons' schedule.lesson.pk %}" class="btn btn-primary"> Посмотреть урок </a>
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
