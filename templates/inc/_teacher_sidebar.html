@@ -1,0 +1,13 @@
+<div class="col-md-3">
+    <ul class="list-group">
+        {% if teacher %}
+        <a href="{% url 'teacher' teacher.pk %}" class="list-group-item"> Личные данные </a>
+        <a href="{% url 'schedule' teacher.pk %}" class="list-group-item"> Расписание </a>
+        {% for group in groups %}
+            <a href="{% url 'group' group.pk %}" class="list-group-item"> {{ group.name }} </a>
+        {% endfor %}
+        <a href="{% url 'school' teacher.school.pk %}" class="list-group-item"> Моя школа </a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="list-group-item"> Выйти </a>
+    </ul>
+</div>

@@ -3,7 +3,6 @@ import datetime
 from django.db import models
 
 
-
 class School(models.Model):
     name = models.CharField('Название', max_length=100)
     address = models.CharField('Адрес', max_length=50, default='address')
@@ -28,6 +27,9 @@ class Teacher(models.Model):
 
     school = models.ForeignKey('School', on_delete=models.CASCADE, null=True)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, null=True)
+
+    def get_absolute_url(self):
+        return "/teacher/%i" % self.pk
 
     class Meta:
         verbose_name = 'Учитель'
@@ -154,6 +156,7 @@ class Homework(models.Model):
 
     mark = models.ForeignKey('Mark', on_delete=models.CASCADE, null=True, default='выдано')
     student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True, default=None)
+    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True, default=None)
 
     class Meta:
         verbose_name = 'Домашнее задание'

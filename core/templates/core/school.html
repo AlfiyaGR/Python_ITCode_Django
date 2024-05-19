@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
+        <div class="card-header"> {{ school.name }} </div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ school.name }} </h5>
+            <p class="card-text"> Адрес: {{ school.address }} </p>
+            <p class="card-text"> Контактный телефон: {{ school.contactPhone }} </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
