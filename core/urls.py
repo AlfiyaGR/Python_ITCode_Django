@@ -1,9 +1,10 @@
+from django.template.defaulttags import url
 from django.urls import path
 from core import views
 
 
 urlpatterns = [
-    path('', views.AuthorizationForm.as_view(), name='home'),
+    path('', views.home, name='home'),
     path('schools/', views.SchoolList.as_view(), name='schools'),
     path('teachers/', views.TeacherList.as_view(), name='teachers'),
     path('teacher/<int:pk>/', views.TeacherDetail.as_view(), name='teacher'),
@@ -13,6 +14,11 @@ urlpatterns = [
     path('school/<int:pk>/', views.SchoolDetail.as_view(), name='school'),
     path('lessons/<int:pk>/', views.LessonDetail.as_view(), name='lessons'),
     path('homeworks/<int:pk>/', views.HomeworkList.as_view(), name='homeworks'),
-
+    path('get_teacher', views.get_teacher, name='get_teacher'),
     path('redirect/', views.RedirectAdmin.as_view(), name='redirect'),
 ]
+'''
+urlpatterns += [
+    url(r'^teacher/(?P<pk>[-\w]+)/$', views.get_teacher, name='get_teacher'),
+]
+'''
