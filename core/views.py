@@ -26,8 +26,21 @@ def get_teacher(request):
     return render(request, 'core/teacher.html', {'teacher': teacher, 'groups': groups})
 
 
+def get_student(request):
+    login = request.GET['login']
+    password = request.GET['password']
+
+    student = models.Student.objects.get(login=login, password=password)
+
+    return render(request, 'core/student.html', {'student': student, })
+
+
 def home(request):
     return render(request, 'core/index.html')
+
+
+def homeStud(request):
+    return render(request, 'core/indexStud.html')
 
 
 '''
@@ -109,7 +122,7 @@ class GroupList(ListView):
 
 
 class LessonDetail(DetailView):
-    model = models.Schedule
+    model = models.Lesson
     template_name = 'core/lessons.html'
 
     def get_context_data(self, **kwargs):
@@ -193,16 +206,31 @@ class TeacherDetail(DetailView):
         return context
 
 
+class StudentDetail(DetailView):
+    model = models.Student
+    template_name = 'core/student.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+
+        context['student'] = student
+        return context
+
+
 class SchoolDetail(DetailView):
-    model = models.School
+    model = models.Teacher
     template_name = 'core/school.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        teacher = models.Teacher.objects.get(school=self.kwargs['pk'])
+        teacher = models.Teacher.objects.get(pk=self.kwargs['pk'])
+        school = models.School.objects.get(pk=teacher.school.pk)
         groups = models.Group.objects.filter(teacher=teacher.pk)
 
+        context['school'] = school
         context['teacher'] = teacher
         context['groups'] = groups
         return context

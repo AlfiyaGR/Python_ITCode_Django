@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_student_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
+        <div class="card-header"> {{ student.surname }} {{ student.name }}</div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ student.surname }} {{ student.name }} </h5>
+            <p class="card-text"> {{ student.email }} </p>
+            <p class="card-text"> {{ student.phone }} </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
