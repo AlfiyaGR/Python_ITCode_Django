@@ -16,22 +16,19 @@ def index(request):
 '''
 
 
-class AuthorizationForm(FormView):
-    template_name = 'core/index.html'
-    form_class = forms.AuthorizationForm
-    success_url = '/teachers/'
+def get_teacher(request):
+    login = request.GET['login']
+    password = request.GET['password']
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
-        return context
+    teacher = models.Teacher.objects.get(login=login, password=password)
+    groups = models.Group.objects.filter(teacher=teacher.pk)
 
-    def form_valid(self, form):
-        login, password = form.cleaned_data.values()
-        teacher = models.Teacher.objects.get(login=login, password=password)
-        id = teacher.pk
-        form.redirection(f'/teachers/{id}')
-        return super().form_valid(form)
+    return render(request, 'core/teacher.html', {'teacher': teacher, 'groups': groups})
+
+
+def home(request):
+    return render(request, 'core/index.html')
+
 
 '''
 def get_all_schools(request):
@@ -77,6 +74,7 @@ class ScheduleList(ListView):
         context['groups'] = groups
 
         return context
+
 
 '''
 def get_all_teachers(request):
@@ -147,6 +145,7 @@ class HomeworkList(ListView):
         context['teacher'] = teacher
         return context
 
+
 '''
 def get_group(request, group_id):
     students = models.Student.objects.filter(group=group_id)
@@ -207,4 +206,3 @@ class SchoolDetail(DetailView):
         context['teacher'] = teacher
         context['groups'] = groups
         return context
-
