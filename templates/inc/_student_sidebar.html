@@ -1,0 +1,11 @@
+<div class="col-md-3">
+    <ul class="list-group">
+        {% if student %}
+        <a href="{% url 'student' student.pk %}" class="list-group-item"> Личные данные </a>
+        <a href="{% url 'schedule' student.pk %}" class="list-group-item"> Расписание </a>
+        <a href="{% url 'group' student.pk %}" class="list-group-item"> Мой класс {{ group.name }} </a>
+        <a href="{% url 'school' student.pk %}" class="list-group-item"> Моя школа </a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="list-group-item"> Выйти </a>
+    </ul>
+</div>

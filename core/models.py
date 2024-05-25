@@ -16,6 +16,25 @@ class School(models.Model):
         return f'{self.name}'
 
 
+class Administrator(models.Model):
+    surname = models.CharField('Фамилия', max_length=250)
+    name = models.CharField('Имя', max_length=250)
+    lastname = models.CharField('Отчество', max_length=250, null=True)
+    phone = models.CharField('Номер телефона', max_length=50, null=True)
+    email = models.CharField('Электронная почта', max_length=50, default='email')
+    login = models.CharField('Логин', max_length=150, default='login')
+    password = models.CharField('Пароль', max_length=150, default='password')
+
+    school = models.ForeignKey('School', on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = 'Администратор'
+        verbose_name_plural = 'Администратор'
+
+    def __str__(self) -> str:
+        return f'Админ {self.name} {self.lastname}'
+
+
 class Teacher(models.Model):
     surname = models.CharField('Фамилия', max_length=250)
     name = models.CharField('Имя', max_length=250)
@@ -36,7 +55,7 @@ class Teacher(models.Model):
         verbose_name_plural = 'Учитель'
 
     def __str__(self) -> str:
-        return f'{self.name} {self.lastname}'
+        return f'Учитель {self.name} {self.lastname}'
 
 
 class Group(models.Model):
@@ -72,7 +91,7 @@ class Student(models.Model):
         verbose_name_plural = 'Ученик'
 
     def __str__(self) -> str:
-        return f'{self.name} {self.surname}'
+        return f'Ученик {self.name} {self.surname}'
 
 
 class Subject(models.Model):
