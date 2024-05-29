@@ -2,16 +2,19 @@
 
 {% block content %}
 <a href="/">Учитель</a>
-
 <form action="{% url 'get_student' %}">
-    <label> Login </label>
-    <input type="text" name="login">
-    <br>
-    <br>
-    <label> Password </label>
-    <input type="text" name="password">
-    <br>
-    <br>
+    <div class="mb-3 row">
+        <label for="inputEmail" class="col-sm-2 col-form-label">Login</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputEmail" name="login">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword" name="password">
+        </div>
+    </div>
     <input type="submit" value="Submit">
 </form>
 {% endblock %}

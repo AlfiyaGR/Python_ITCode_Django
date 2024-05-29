@@ -6,12 +6,15 @@
 
 {% block content %}
 <div class="col-md-9">
-    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
+    <div class="card text-bg-success mb-3" style="max-width: 40rem;">
         <div class="card-header"> {{ teacher.surname }} {{ teacher.name }}</div>
         <div class="card-body">
             <h5 class="card-title"> {{ teacher.surname }} {{ teacher.name }} </h5>
-            <p class="card-text"> {{ teacher.email }} </p>
-            <p class="card-text"> {{ teacher.phone }} </p>
+            <p class="card-text"> {{ teacher.subject.name }} </p>
+            <p class="card-text text-end"> Почта: </p>
+            <p class="card-text text-end"> {{ teacher.email }} </p>
+            <p class="card-text text-end"> Телефон: </p>
+            <p class="card-text text-end"> {{ teacher.phone }} </p>
         </div>
     </div>
 </div>

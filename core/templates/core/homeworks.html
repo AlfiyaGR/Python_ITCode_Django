@@ -12,10 +12,14 @@
             <div class="card border-primary mb-3" style="max-width: 18rem;">
                 <div class="card-header"> Домашнее задание </div>
                 <div class="card-body">
+                    <h5 class="card-title"> {{ homework.student }} </h5>
                     <h5 class="card-title"> {{ lesson.subject.name }} </h5>
                     <p class="card-text"> {{ lesson.date }} </p>
                     <p class="card-text"> {{ homework.description }} </p>
                     <p class="card-text"> {{ homework.file }} </p>
+                    <p class="card-text">
+                        <a href="{% url 'homeworks' lesson.pk %}" class="btn btn-primary"> Оценить </a>
+                    </p>
                 </div>
             </div>
         </div>
