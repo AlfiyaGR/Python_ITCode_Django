@@ -14,7 +14,7 @@
             <p class="card-text">Почта: {{ student.email }} </p>
             <p class="card-text">Телефон: {{ student.phone }} </p>
             <p class="card-text text-end">
-                <a href="{% url 'group' group.pk %}" class="btn btn-warning"> Посмотреть оценки </a>
+                <a href="{% url 'marks' student.pk %}" class="btn btn-warning"> Посмотреть оценки </a>
             </p>
         </div>
     </div>

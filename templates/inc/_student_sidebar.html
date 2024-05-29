@@ -4,6 +4,7 @@
         <a href="{% url 'student' student.pk %}" class="list-group-item"> Личные данные </a>
         <a href="{% url 'stud_schedule' student.pk %}" class="list-group-item"> Расписание </a>
         <a href="{% url 'stud_group' student.pk %}" class="list-group-item"> Мой класс {{ student.group.name }} </a>
+        <a href="{% url 'stud_marks' student.pk %}" class="list-group-item"> Мои оценки </a>
         <a href="{% url 'stud_school' student.pk %}" class="list-group-item"> Моя школа </a>
         {% endif %}
         <a href="{% url 'home' %}" class="list-group-item"> Выйти </a>
