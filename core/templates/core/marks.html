@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% if teacher %}
+    {% include 'inc/_teacher_sidebar.html' %}
+{% else %}
+    {% include 'inc/_student_sidebar.html' %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card border-warning mb-3" style="max-width: 40rem;">
+        <div class="card-header"> {{ student.surname }} {{ student.name }}</div>
+        <div class="card-body">
+            {% for mark in marks %}
+            <p class="card-text">Предмет: {{ mark.subject.name }} </p>
+            <p class="card-text">Оценка: {{ mark.mark }} </p>
+            {% endfor %}
+            <p class="card-text text-end">
+                <a href="{% url 'group' student.group.pk %}" class="btn btn-warning"> Назад </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

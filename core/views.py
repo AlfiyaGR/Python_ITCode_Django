@@ -113,7 +113,85 @@ class SchoolDetail(DetailView):
         return context
 
 
+class MarkDetail(DetailView):
+    model = models.Student
+    template_name = 'core/marks.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+        teacher = models.Teacher.objects.get(pk=student.group.teacher.pk)
+        groups = models.Group.objects.filter(teacher=teacher.pk)
+        marks = models.Mark.objects.filter(student=student.pk)
+
+        context['marks'] = marks
+        context['student'] = student
+        context['teacher'] = teacher
+        context['groups'] = groups
+        return context
+
+
+# Подробности урока
+class LessonDetail(DetailView):
+    model = models.Lesson
+    template_name = 'core/lessons.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        lesson = models.Lesson.objects.get(pk=self.kwargs['pk'])
+        schedule = models.Schedule.objects.get(lesson=lesson.pk)
+        teacher = models.Teacher.objects.get(pk=schedule.teacher.pk)
+        groups = models.Group.objects.filter(teacher=teacher.pk)
+
+        context['lesson'] = lesson
+        context['groups'] = groups
+        context['teacher'] = teacher
+        return context
+
+
+# Список домашних работ по уроку
+class HomeworkList(ListView):
+    model = models.Lesson
+    template_name = 'core/homeworks.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        lesson = models.Lesson.objects.get(pk=self.kwargs['pk'])
+        schedule = models.Schedule.objects.get(lesson=lesson.pk)
+        teacher = models.Teacher.objects.get(pk=schedule.teacher.pk)
+        groups = models.Group.objects.filter(teacher=teacher.pk)
+        homeworks = models.Homework.objects.filter(lesson=lesson.pk)
+
+        context['lesson'] = lesson
+        context['homeworks'] = homeworks
+        context['groups'] = groups
+        context['teacher'] = teacher
+        return context
+
+
 """ Личный кабинет ученика """
+
+
+# Расписание ученика
+class StudScheduleList(ListView):
+    model = models.Student
+    template_name = 'core/schedule.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+        group = models.Group.objects.get(pk=student.group.pk)
+        schedules = models.Schedule.objects.filter(group=group.pk)
+
+        context['student'] = student
+        context['schedules'] = schedules
+        context['group'] = group
+
+        return context
 
 
 # Подробности о студенте
@@ -165,6 +243,59 @@ class StudSchoolDetail(DetailView):
         return context
 
 
+class StudMarkDetail(DetailView):
+    model = models.Student
+    template_name = 'core/marks.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+        # teacher = models.Teacher.objects.get(pk=student.group.teacher.pk)
+        # groups = models.Group.objects.filter(teacher=teacher.pk)
+        marks = models.Mark.objects.filter(student=student.pk)
+
+        context['marks'] = marks
+        context['student'] = student
+        # context['teacher'] = teacher
+        # context['groups'] = groups
+        return context
+
+
+# Подробности урока
+class StudLessonDetail(DetailView):
+    model = models.Lesson
+    template_name = 'core/lessons.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+        lesson = models.Lesson.objects.get(pk=self.kwargs['lesson_pk'])
+
+        context['lesson'] = lesson
+        context['student'] = student
+        return context
+
+
+# Список домашних работ по уроку
+class StudHomeworkDetail(DetailView):
+    model = models.Lesson
+    template_name = 'core/homeworks.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        student = models.Student.objects.get(pk=self.kwargs['pk'])
+        lesson = models.Lesson.objects.get(pk=self.kwargs['lesson_pk'])
+        homeworks = models.Homework.objects.filter(lesson=lesson.pk, student=student.pk)
+
+        context['student'] = student
+        context['lesson'] = lesson
+        context['homeworks'] = homeworks
+        return context
+
+
 """ Все остальное """
 
 
@@ -187,25 +318,6 @@ class SchoolList(ListView):
     template_name = 'core/schools.html'
 
 
-# Расписание ученика
-class StudScheduleList(ListView):
-    model = models.Student
-    template_name = 'core/schedule.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        student = models.Student.objects.get(pk=self.kwargs['pk'])
-        group = models.Group.objects.get(pk=student.group.pk)
-        schedules = models.Schedule.objects.filter(group=group.pk)
-
-        context['student'] = student
-        context['schedules'] = schedules
-        context['group'] = group
-
-        return context
-
-
 # Список всех учителей
 class TeacherList(ListView):
     model = models.Teacher
@@ -218,46 +330,6 @@ class GroupList(ListView):
     model = models.Group
     context_object_name = "groups"
     template_name = 'core/groups.html'
-
-
-# Подробности урока
-class LessonDetail(DetailView):
-    model = models.Lesson
-    template_name = 'core/lessons.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        lesson = models.Lesson.objects.get(pk=self.kwargs['pk'])
-        schedule = models.Schedule.objects.get(lesson=lesson.pk)
-        teacher = models.Teacher.objects.get(pk=schedule.teacher.pk)
-        groups = models.Group.objects.filter(teacher=teacher.pk)
-
-        context['lesson'] = lesson
-        context['groups'] = groups
-        context['teacher'] = teacher
-        return context
-
-
-# Список домашних работ по уроку
-class HomeworkList(ListView):
-    model = models.Lesson
-    template_name = 'core/homeworks.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        lesson = models.Lesson.objects.get(pk=self.kwargs['pk'])
-        schedule = models.Schedule.objects.get(lesson=lesson.pk)
-        teacher = models.Teacher.objects.get(pk=schedule.teacher.pk)
-        groups = models.Group.objects.filter(teacher=teacher.pk)
-        homeworks = models.Homework.objects.filter(lesson=lesson.pk)
-
-        context['lesson'] = lesson
-        context['homeworks'] = homeworks
-        context['groups'] = groups
-        context['teacher'] = teacher
-        return context
 
 
 '''

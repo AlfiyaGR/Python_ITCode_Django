@@ -6,21 +6,21 @@
 
 {% block content %}
 <div class="col-md-9">
-    <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
+    <div class="card text-bg-success mb-3" style="max-width: 40rem;">
         <div class="card-header"> Классный руководитель </div>
         <div class="card-body">
             <h5 class="card-title"> {{ teacher.surname }} {{ teacher.name }} </h5>
-            <p class="card-text">Почта: {{ teacher.email }} </p>
-            <p class="card-text">Телефон: {{ teacher.phone }} </p>
+            <p class="card-text text-end">Почта: {{ teacher.email }} </p>
+            <p class="card-text text-end">Телефон: {{ teacher.phone }} </p>
         </div>
     </div>
     {% for student in students %}
-    <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
+    <div class="card text-bg-warning mb-3" style="max-width: 40rem;">
         <div class="card-header"> {{ student.surname }} {{ student.name }} </div>
         <div class="card-body">
             <h5 class="card-title"> {{ student.surname }} {{ student.name }} </h5>
-            <p class="card-text">Почта: {{ student.email }} </p>
-            <p class="card-text">Телефон: {{ student.phone }} </p>
+            <p class="card-text text-end">Почта: {{ student.email }} </p>
+            <p class="card-text text-end">Телефон: {{ student.phone }} </p>
         </div>
     </div>
     {% endfor %}
