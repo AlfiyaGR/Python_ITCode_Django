@@ -12,12 +12,13 @@
 
 {% block content %}
 <div class="col-md-9">
-    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
+    <div class="card text-bg-success  mb-3" style="max-width: 40rem;">
         <div class="card-header"> {{ school.name }} </div>
         <div class="card-body">
             <h5 class="card-title"> {{ school.name }} </h5>
             <p class="card-text"> Адрес: {{ school.address }} </p>
-            <p class="card-text"> Контактный телефон: {{ school.contactPhone }} </p>
+            <p class="card-text text-end"> Контактный телефон: </p>
+            <p class="card-text text-end"> {{ school.contactPhone }} </p>
         </div>
     </div>
 </div>

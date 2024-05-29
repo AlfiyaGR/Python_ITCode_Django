@@ -3,30 +3,44 @@
 {% block sidebar %}
 
 {% if teacher %}
-    {% include 'inc/_teacher_sidebar.html' %}
+{% include 'inc/_teacher_sidebar.html' %}
 {% elif student %}
-    {% include 'inc/_student_sidebar.html' %}
+{% include 'inc/_student_sidebar.html' %}
 {% endif %}
 
 {% endblock %}
 
 {% block content %}
 <div class="col-md-9">
-    <div class="card text-bg-success  mb-3" style="max-width: 18rem;">
-        <div class="card-header"> Расписание </div>
-        <div class="card-body">
-            <h5 class="card-title"> <!--{{ teacher.surname }} {{ teacher.name }}-->Урок </h5>
-            {% for schedule in schedules %}
-                <p class="card-text"> {{ schedule.teacher.surname }} {{ schedule.teacher.name }}</p>
-                <p class="card-text"> {{ schedule.date }} </p>
-                <p class="card-text"> {{ schedule.group.name }} </p>
-                <p class="card-text"> {{ schedule.lesson.subject.name }} </p>
-                <p class="card-text"> {{ schedule.lesson.date }} </p>
-                <p class="card-text">
-                    <a href="{% url 'lessons' schedule.lesson.pk %}" class="btn btn-primary"> Посмотреть урок </a>
+    <table class="table table-info table-striped">
+        <tr>
+            <td></td>
+            <td></td>
+            <td><p class="h4">Расписание</p></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for schedule in schedules %}
+        <tr>
+            <td>
+                <p> {{ schedule.lesson.date }} </p>
+            </td>
+            <td>
+                <p> {{ schedule.group.name }} </p>
+            </td>
+            <td>
+                <p> {{ schedule.lesson.subject.name }} </p>
+            </td>
+            <td>
+                <p> {{ schedule.teacher.surname }} {{ schedule.teacher.name }}</p>
+            </td>
+            <td>
+                <p>
+                    <a href="{% url 'lessons' schedule.lesson.pk %}" class="btn btn-info"> Посмотреть урок </a>
                 </p>
-            {% endfor %}
-        </div>
-    </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}

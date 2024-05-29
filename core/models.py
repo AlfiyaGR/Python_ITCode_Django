@@ -55,7 +55,7 @@ class Teacher(models.Model):
         verbose_name_plural = 'Учитель'
 
     def __str__(self) -> str:
-        return f'Учитель {self.name} {self.lastname}'
+        return f'{self.name} {self.lastname} {self.subject.name} {self.school.name}'
 
 
 class Group(models.Model):
@@ -91,7 +91,7 @@ class Student(models.Model):
         verbose_name_plural = 'Ученик'
 
     def __str__(self) -> str:
-        return f'Ученик {self.name} {self.surname}'
+        return f'Ученик {self.name} {self.surname} {self.group.name}'
 
 
 class Subject(models.Model):
@@ -114,11 +114,14 @@ class GroupSubject(models.Model):
         verbose_name_plural = 'Предметы классов'
 
     def __str__(self):
-        return 'Предмет класса'
+        return f'{self.subject.name} {self.group.name}'
 
 
 class Lesson(models.Model):
-    date = models.DateTimeField('Дата')
+    name = models.CharField('Урок', max_length=100, default='Урок')
+    date = models.DateTimeField('Время')
+    description = models.TextField('Описание', blank=True)
+    file = models.FileField('Файл', null=True, upload_to='files', default=None)
 
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, null=True)
 
@@ -127,11 +130,12 @@ class Lesson(models.Model):
         verbose_name_plural = 'Урок'
 
     def __str__(self) -> str:
-        return f'Урок {self.date}'
+        return f'{self.name} {self.subject} {self.date}'
 
 
 class Schedule(models.Model):
-    date = models.DateTimeField('Дата')
+    name = models.CharField('Расписание', max_length=100, default='Расписание')
+    date = models.DateField('Дата')
 
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True)
     group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
@@ -142,13 +146,13 @@ class Schedule(models.Model):
         verbose_name_plural = 'Расписание'
 
     def __str__(self) -> str:
-        return f'Расписание {self.date}'
+        return f'{self.name} {self.group.name} {self.lesson.name}'
 
 
 class Mark(models.Model):
 
     MARK_CHOICES = (
-        ('nothing', 'выдано'),
+        ('выдано', 'выдано'),
         ('1', '1'),
         ('2', '2'),
         ('3', '3'),
@@ -159,19 +163,20 @@ class Mark(models.Model):
     mark = models.CharField('Оценка', max_length=50, choices=MARK_CHOICES, default='nothing')
 
     student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True)
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Оценка'
         verbose_name_plural = 'Оценка'
 
     def __str__(self):
-        return f'{self.mark}'
+        return f'{self.mark} {self.student}'
 
 
 class Homework(models.Model):
     description = models.TextField('Описание', blank=True)
     date = models.DateTimeField('Дата выдачи')
-    file = models.FileField('Файл', null=True, upload_to='files', default=None)
+    file = models.FileField('Файл', blank=True, null=True, upload_to='files', default=None)
 
     mark = models.ForeignKey('Mark', on_delete=models.CASCADE, null=True, default='выдано')
     student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True, default=None)
@@ -182,4 +187,4 @@ class Homework(models.Model):
         verbose_name_plural = 'Домашнее задание'
 
     def __str__(self):
-        return f'Домашнее задание {self.date}'
+        return f'Домашнее задание {self.description}'

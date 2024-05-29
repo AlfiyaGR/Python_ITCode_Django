@@ -7,12 +7,15 @@
 {% block content %}
 <div class="col-md-9">
     {% for student in students %}
-    <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
-        <div class="card-header"> {{ student.surname }} {{ student.name }} </div>
+    <div class="card border-warning mb-3" style="max-width: 40rem;">
+        <div class="card-header"> {{ student.surname }} {{ student.name }}</div>
         <div class="card-body">
             <h5 class="card-title"> {{ student.surname }} {{ student.name }} </h5>
             <p class="card-text">Почта: {{ student.email }} </p>
             <p class="card-text">Телефон: {{ student.phone }} </p>
+            <p class="card-text text-end">
+                <a href="{% url 'group' group.pk %}" class="btn btn-warning"> Посмотреть оценки </a>
+            </p>
         </div>
     </div>
     {% endfor %}
