@@ -16,26 +16,28 @@
             <td></td>
         </tr>
         <tr>
-            <td><p class="h6">Фамилия</p></td>
-            <td><p class="h6">Имя</p></td>
-            <td><p class="h6">Отчество</p></td>
-            <td><p class="h6">Предмет</p></td>
+            <td><p class="h6">Расписание</p></td>
+            <td><p class="h6">Класс</p></td>
+            <td><p class="h6">Учитель</p></td>
+            <td><p class="h6">Урок</p></td>
             <td></td>
             <td></td>
         </tr>
-        {% for teacher in teachers %}
+        {% for schedule in schedules %}
+        {% if schedule.teacher.school.pk == admin.school.pk %}
         <tr>
             <td>
-                <p> {{ teacher.surname }} </p>
+                <p> {{ schedule.name }} </p>
+                <p> {{ schedule.lesson.date }} </p>
             </td>
             <td>
-                <p> {{ teacher.name }} </p>
+                <p> {{ schedule.group.name }} </p>
             </td>
             <td>
-                <p> {{ teacher.lastname }} </p>
+                <p> {{ schedule.teacher }} </p>
             </td>
             <td>
-                <p> {{ teacher.subject.name }} </p>
+                <p> {{ schedule.lesson.subject.name }} </p>
             </td>
             <td>
                 <p>
@@ -48,6 +50,7 @@
                 </p>
             </td>
         </tr>
+        {% endif %}
         {% endfor %}
     </table>
 </div>

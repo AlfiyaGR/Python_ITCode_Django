@@ -9,23 +9,13 @@
     <table class="table table-warning table-striped">
         <tr>
             <td></td>
-            <td><p class="h4">Список классов</p></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><p class="h6">Класс</p></td>
-            <td><p class="h6">Классный руководитель</p></td>
-            <td></td>
+            <td><p class="h4">Список предметов</p></td>
             <td></td>
         </tr>
-        {% for group in groups %}
+        {% for subject in subjects %}
         <tr>
             <td>
-                <p> {{ group.name }} </p>
-            </td>
-            <td>
-                <p> {{ group.teacher.surname }} {{ group.teacher.name }} </p>
+                <p> {{ subject.name }} </p>
             </td>
             <td>
                 <p>
@@ -42,4 +32,3 @@
     </table>
 </div>
 {% endblock %}
-

@@ -1,0 +1,13 @@
+<div class="col-md-3">
+    <ul class="list-group">
+        {% if admin %}
+        <a href="{% url 'administrator' admin.pk %}" class="list-group-item"> Личные данные </a>
+        <a href="{% url 'admin_school' admin.pk %}" class="list-group-item"> Школа </a>
+        <a href="{% url 'teachers' admin.pk %}" class="list-group-item"> Учителя </a>
+        <a href="{% url 'schedules' admin.pk %}" class="list-group-item"> Расписания </a>
+        <a href="{% url 'groups' admin.pk %}" class="list-group-item"> Классы </a>
+        <a href="{% url 'subjects' admin.pk %}" class="list-group-item"> Предметы </a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="list-group-item"> Выйти </a>
+    </ul>
+</div>

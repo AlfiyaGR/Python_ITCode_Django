@@ -29,6 +29,16 @@ def get_student(request):
     return render(request, 'core/student.html', {'student': student, })
 
 
+# Форма авторизации ученика
+def get_admin(request):
+    login = request.GET['login']
+    password = request.GET['password']
+
+    admin = models.Administrator.objects.get(login=login, password=password)
+
+    return render(request, 'core/admin_panel.html', {'admin': admin, })
+
+
 # Главная страница (вход учителя)
 def home(request):
     return render(request, 'core/index.html')
@@ -37,6 +47,11 @@ def home(request):
 # Главная страница (вход ученика)
 def home_stud(request):
     return render(request, 'core/index_stud.html')
+
+
+# Главная страница (вход администратора)
+def home_admin(request):
+    return render(request, 'core/index_admin.html')
 
 
 """ Личный кабинет учителя """
@@ -296,6 +311,104 @@ class StudHomeworkDetail(DetailView):
         return context
 
 
+""" Личный кабинет администратора """
+
+
+# Расписание учителя
+class AllScheduleList(ListView):
+    model = models.Administrator
+    template_name = 'core/schedules.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        schedules = models.Schedule.objects.all()
+
+        context['admin'] = admin
+        context['schedules'] = schedules
+
+        return context
+
+
+# Подробности о студенте
+class AdminDetail(DetailView):
+    model = models.Administrator
+    template_name = 'core/admin_panel.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+
+        context['admin'] = admin
+        return context
+
+
+# Подробности о школе для ученика
+class AdminSchoolDetail(DetailView):
+    model = models.Administrator
+    template_name = 'core/school.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        school = models.School.objects.get(pk=admin.school.pk)
+
+        context['school'] = school
+        context['admin'] = admin
+        return context
+
+
+# Список всех учителей
+class TeacherList(ListView):
+    model = models.Administrator
+    template_name = 'core/teachers.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        teachers = models.Teacher.objects.filter(school=admin.school.pk)
+
+        context['admin'] = admin
+        context['teachers'] = teachers
+        return context
+
+
+# Список всех классов
+class GroupList(ListView):
+    model = models.Administrator
+    template_name = 'core/groups.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        groups = models.Group.objects.filter(school=admin.school.pk)
+
+        context['admin'] = admin
+        context['groups'] = groups
+        return context
+
+
+# Список всех классов
+class SubjectList(ListView):
+    model = models.Administrator
+    template_name = 'core/subjects.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        subjects = models.Subject.objects.all()
+
+        context['admin'] = admin
+        context['subjects'] = subjects
+        return context
+
+
 """ Все остальное """
 
 
@@ -316,20 +429,6 @@ class SchoolList(ListView):
     model = models.School
     context_object_name = "schools"
     template_name = 'core/schools.html'
-
-
-# Список всех учителей
-class TeacherList(ListView):
-    model = models.Teacher
-    context_object_name = "teachers"
-    template_name = 'core/teachers.html'
-
-
-# Список всех классов
-class GroupList(ListView):
-    model = models.Group
-    context_object_name = "groups"
-    template_name = 'core/groups.html'
 
 
 '''

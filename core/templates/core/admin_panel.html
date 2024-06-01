@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <div class="card text-bg-success mb-3" style="max-width: 40rem;">
+        <div class="card-header"> {{ admin.surname }} {{ admin.name }}</div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ admin.surname }} {{ admin.name }} </h5>
+            <p class="card-text text-end"> Почта: </p>
+            <p class="card-text text-end"> {{ admin.email }} </p>
+            <p class="card-text text-end"> Телефон: </p>
+            <p class="card-text text-end"> {{ admin.phone }} </p>
+            <p>
+                <a href="#" class="btn btn-warning"> Редактировать </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
