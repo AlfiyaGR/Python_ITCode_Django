@@ -3,10 +3,10 @@
 {% block content %}
 <div class="btn-group" style="max-width: 20px">
     <a href="/" class="btn btn-outline-primary" aria-current="page">Учитель</a>
-    <a href="/home_stud" class="btn btn-outline-primary active">Ученик</a>
-    <a href="/home_admin" class="btn btn-outline-primary">Администратор</a>
+    <a href="/home_stud" class="btn btn-outline-primary">Ученик</a>
+    <a href="/home_admin" class="btn btn-outline-primary active">Администратор</a>
 </div>
-<form action="{% url 'get_student' %}">
+<form action="{% url 'get_admin' %}">
     <div class="mb-3 row">
         <label for="inputEmail" class="col-sm-2 col-form-label">Login</label>
         <div class="col-sm-10">
@@ -21,4 +21,5 @@
     </div>
     <input type="submit" value="Submit">
 </form>
+
 {% endblock %}

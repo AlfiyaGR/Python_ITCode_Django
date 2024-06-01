@@ -3,9 +3,11 @@
 {% block sidebar %}
 
 {% if teacher %}
-    {% include 'inc/_teacher_sidebar.html' %}
+{% include 'inc/_teacher_sidebar.html' %}
 {% elif student %}
-    {% include 'inc/_student_sidebar.html' %}
+{% include 'inc/_student_sidebar.html' %}
+{% elif admin %}
+{% include 'inc/_admin_sidebar.html' %}
 {% endif %}
 
 {% endblock %}
@@ -13,12 +15,17 @@
 {% block content %}
 <div class="col-md-9">
     <div class="card text-bg-success  mb-3" style="max-width: 40rem;">
-        <div class="card-header"> {{ school.name }} </div>
+        <div class="card-header"> {{ school.name }}</div>
         <div class="card-body">
             <h5 class="card-title"> {{ school.name }} </h5>
             <p class="card-text"> Адрес: {{ school.address }} </p>
             <p class="card-text text-end"> Контактный телефон: </p>
             <p class="card-text text-end"> {{ school.contactPhone }} </p>
+            {% if admin %}
+            <p>
+                <a href="#" class="btn btn-warning"> Редактировать </a>
+            </p>
+            {% endif %}
         </div>
     </div>
 </div>

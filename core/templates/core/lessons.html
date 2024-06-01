@@ -21,6 +21,9 @@
                     <p>Материалы по уроку: </p>
                     <p class="card-text"> {{ lesson.description }} </p>
                     <p class="card-text"> {{ lesson.file }} </p>
+                    <p class="card-text">
+                        <a href="#" class="btn btn-primary"> Подключиться к уроку/Посмотреть запись </a>
+                    </p>
                     {% if teacher %}
                     <p class="card-text">
                         <a href="{% url 'homeworks' lesson.pk %}" class="btn btn-primary"> Домашние работы </a>

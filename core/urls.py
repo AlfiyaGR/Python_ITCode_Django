@@ -2,18 +2,18 @@ from django.template.defaulttags import url
 from django.urls import path
 from core import views
 
-
 urlpatterns = [
     # главная страница (вход учителя и ученика)
     path('', views.home, name='home'),
     path('home_stud/', views.home_stud, name='home_stud'),
+    path('home_admin/', views.home_admin, name='home_admin'),
+
     path('get_student', views.get_student, name='get_student'),
     path('get_teacher', views.get_teacher, name='get_teacher'),
+    path('get_admin', views.get_admin, name='get_admin'),
 
     # списки
     path('schools/', views.SchoolList.as_view(), name='schools'),
-    path('teachers/', views.TeacherList.as_view(), name='teachers'),
-    path('groups/', views.GroupList.as_view(), name='groups'),
 
     # личный кабинет учителя
     path('teacher/<int:pk>/', views.TeacherDetail.as_view(), name='teacher'),
@@ -32,6 +32,14 @@ urlpatterns = [
     path('stud_marks/<int:pk>/', views.StudMarkDetail.as_view(), name='stud_marks'),
     path('stud_lessons/<int:pk>/<int:lesson_pk>', views.StudLessonDetail.as_view(), name='stud_lessons'),
     path('stud_homeworks/<int:pk>/<int:lesson_pk>', views.StudHomeworkDetail.as_view(), name='stud_homeworks'),
+
+    # личный кабинет администратора
+    path('administrator/<int:pk>/', views.AdminDetail.as_view(), name='administrator'),
+    path('teachers/<int:pk>', views.TeacherList.as_view(), name='teachers'),
+    path('groups/<int:pk>', views.GroupList.as_view(), name='groups'),
+    path('admin_school/<int:pk>/', views.AdminSchoolDetail.as_view(), name='admin_school'),
+    path('subjects/<int:pk>', views.SubjectList.as_view(), name='subjects'),
+    path('schedules/<int:pk>', views.AllScheduleList.as_view(), name='schedules'),
 
     # все остальное
     path('redirect/', views.RedirectAdmin.as_view(), name='redirect'),
