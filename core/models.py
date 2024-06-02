@@ -123,6 +123,7 @@ class Lesson(models.Model):
     description = models.TextField('Описание', blank=True)
     file = models.FileField('Файл', null=True, upload_to='files', default=None)
 
+    # schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, null=True)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, null=True)
 
     class Meta:
@@ -135,7 +136,7 @@ class Lesson(models.Model):
 
 class Schedule(models.Model):
     name = models.CharField('Расписание', max_length=100, default='Расписание')
-    date = models.DateField('Дата')
+    date = models.DateTimeField('Дата')
 
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True)
     group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
@@ -150,7 +151,6 @@ class Schedule(models.Model):
 
 
 class Mark(models.Model):
-
     MARK_CHOICES = (
         ('выдано', 'выдано'),
         ('1', '1'),

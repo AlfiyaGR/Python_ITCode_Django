@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% if admin %}
+{% include 'inc/_admin_sidebar.html' %}
+{% elif teacher %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <form method="post" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+</div>
+{% endblock %}

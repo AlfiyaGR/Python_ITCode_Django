@@ -1,9 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 import datetime
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DetailView, RedirectView, FormView
-from core import models, forms
+from core import models
+from .forms import *
 
 """ Авторизация и главная страница """
 
@@ -55,6 +56,36 @@ def home_admin(request):
 
 
 """ Личный кабинет учителя """
+
+
+def post_lesson(request, pk):
+    teacher = models.Teacher.objects.get(pk=pk)
+    subjects = models.Subject.objects.all()
+    groups_schedule = models.Group.objects.all()
+    groups = models.Group.objects.filter(teacher=teacher.pk)
+    schedules = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+
+    if request.method == "POST":
+        lesson = models.Lesson()
+        lesson.name = request.POST.get('name')
+        lesson.date = request.POST.get('date')
+        lesson.description = request.POST.get('description')
+        lesson.file = request.POST.get('file')
+        lesson.subject = models.Subject.objects.get(pk=request.POST.get('subject'))
+        lesson.save()
+
+        schedule = models.Schedule()
+        schedule.name = request.POST.get('schedule')
+        schedule.date = request.POST.get('date')
+        schedule.teacher = teacher
+        schedule.group = models.Group.objects.get(pk=request.POST.get('group'))
+        schedule.lesson = lesson
+        schedule.save()
+        return redirect('schedule', pk=teacher.pk)
+
+    return render(request, 'core/post_lesson.html',
+                  {'subjects': subjects, 'schedules': schedules, 'groups': groups, 'groups_schedule': groups_schedule,
+                   'teacher': teacher})
 
 
 # Расписание учителя
@@ -312,6 +343,193 @@ class StudHomeworkDetail(DetailView):
 
 
 """ Личный кабинет администратора """
+
+
+def edit_admin(request, pk):
+    admin = get_object_or_404(models.Administrator, pk=pk)
+
+    if request.method == "POST":
+        form = PostAdmin(request.POST, instance=admin)
+
+        if form.is_valid():
+            admin = form.save(commit=False)
+            admin.save()
+            return redirect('administrator', pk=admin.pk)
+    else:
+        form = PostAdmin(instance=admin)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def edit_subject(request, pk, pk_subject):
+    admin = models.Administrator.objects.get(pk=pk)
+    subject = get_object_or_404(models.Subject, pk=pk_subject)
+
+    if request.method == "POST":
+        form = PostSubject(request.POST, instance=subject)
+
+        if form.is_valid():
+            subject = form.save(commit=False)
+            subject.save()
+            return redirect('subjects', pk=admin.pk)
+    else:
+        form = PostSubject(instance=subject)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def post_subject(request, pk):
+    admin = models.Administrator.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = PostSubject(request.POST)
+        if form.is_valid():
+            subject = form.save(commit=False)
+            subject.save()
+            return redirect('subjects', pk=admin.pk)
+    else:
+        form = PostSubject()
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def delete_subject(request, pk, pk_subject):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        subject = models.Subject.objects.get(pk=pk_subject)
+        subject.delete()
+        return redirect('subjects', pk=admin.pk)
+    except models.Subject.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
+def post_teacher(request, pk):
+    admin = models.Administrator.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = PostTeacher(request.POST)
+        if form.is_valid():
+            teacher = form.save(commit=False)
+            teacher.school = admin.school
+            teacher.save()
+            return redirect('teachers', pk=admin.pk)
+    else:
+        form = PostTeacher()
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def edit_teacher(request, pk, pk_teacher):
+    admin = models.Administrator.objects.get(pk=pk)
+    teacher = get_object_or_404(models.Teacher, pk=pk_teacher)
+
+    if request.method == "POST":
+        form = PostTeacher(request.POST, instance=teacher)
+
+        if form.is_valid():
+            teacher = form.save(commit=False)
+            teacher.school = admin.school
+            teacher.save()
+            return redirect('teachers', pk=admin.pk)
+    else:
+        form = PostTeacher(instance=teacher)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def delete_teacher(request, pk, pk_teacher):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        teacher = models.Teacher.objects.get(pk=pk_teacher)
+        teacher.delete()
+        return redirect('teachers', pk=admin.pk)
+    except models.Teacher.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
+def edit_school(request, pk, pk_school):
+    admin = models.Administrator.objects.get(pk=pk)
+    school = get_object_or_404(models.School, pk=pk_school)
+
+    if request.method == "POST":
+        form = PostSchool(request.POST, instance=school)
+
+        if form.is_valid():
+            school = form.save(commit=False)
+            school.save()
+            return redirect('admin_school', pk=admin.pk)
+    else:
+        form = PostSchool(instance=school)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def post_lesson_admin(request, pk):
+    admin = models.Administrator.objects.get(pk=pk)
+    subjects = models.Subject.objects.all()
+    groups = models.Group.objects.all()
+    teachers = models.Teacher.objects.all()
+    schedules = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+
+    if request.method == "POST":
+        lesson = models.Lesson()
+        lesson.name = request.POST.get('name')
+        lesson.date = request.POST.get('date')
+        lesson.description = request.POST.get('description')
+        lesson.file = request.POST.get('file')
+        lesson.subject = models.Subject.objects.get(pk=request.POST.get('subject'))
+        lesson.save()
+
+        schedule = models.Schedule()
+        schedule.name = request.POST.get('schedule')
+        schedule.date = request.POST.get('date')
+        schedule.teacher = models.Teacher.objects.get(pk=request.POST.get('teacher'))
+        schedule.group = models.Group.objects.get(pk=request.POST.get('group'))
+        schedule.lesson = lesson
+        schedule.save()
+        return redirect('schedules', pk=admin.pk)
+
+    return render(request, 'core/post_lesson.html',
+                  {'subjects': subjects, 'schedules': schedules, 'groups_schedule': groups, 'teachers': teachers,
+                   'admin': admin})
+
+
+def edit_lesson_admin(request, pk, pk_lesson):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        subjects = models.Subject.objects.all()
+        groups = models.Group.objects.all()
+        teachers = models.Teacher.objects.all()
+        lesson = models.Lesson.objects.get(pk=pk_lesson)
+        schedule = models.Schedule.objects.get(lesson=pk_lesson)
+        schedules = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+
+        if request.method == "POST":
+            lesson.name = request.POST.get('name')
+            lesson.date = request.POST.get('date')
+            lesson.description = request.POST.get('description')
+            lesson.file = request.POST.get('file')
+            lesson.subject = models.Subject.objects.get(pk=request.POST.get('subject'))
+            lesson.save()
+
+            schedule.name = request.POST.get('schedule')
+            schedule.date = request.POST.get('date')
+            schedule.teacher = models.Teacher.objects.get(pk=request.POST.get('teacher'))
+            schedule.group = models.Group.objects.get(pk=request.POST.get('group'))
+            schedule.lesson = lesson
+            schedule.save()
+            return redirect('schedules', pk=admin.pk)
+
+        return render(request, 'core/edit_lesson.html',
+                      {'subjects': subjects, 'schedules': schedules, 'groups_schedule': groups, 'teachers': teachers,
+                       'admin': admin, 'lesson': lesson, 'schedule': schedule})
+
+    except models.Lesson.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
+def delete_lesson(request, pk, pk_lesson):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        lesson = models.Lesson.objects.get(pk=pk_lesson)
+        lesson.delete()
+        return redirect('schedules', pk=admin.pk)
+    except models.Teacher.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
 
 
 # Расписание учителя

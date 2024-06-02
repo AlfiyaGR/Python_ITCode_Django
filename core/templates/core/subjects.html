@@ -10,7 +10,7 @@
         <tr>
             <td></td>
             <td><p class="h4">Список предметов</p></td>
-            <td></td>
+            <td><p><a href="{% url 'post_subject' admin.pk %}">Добавить</a></p></td>
         </tr>
         {% for subject in subjects %}
         <tr>
@@ -19,12 +19,12 @@
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Редактировать </a>
+                    <a href="{% url 'edit_subject' pk=admin.pk pk_subject=subject.pk %}" class="btn btn-warning"> Редактировать </a>
                 </p>
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Удалить </a>
+                    <a href="{% url 'delete_subject' admin.pk subject.pk %}" class="btn btn-warning"> Удалить </a>
                 </p>
             </td>
         </tr>

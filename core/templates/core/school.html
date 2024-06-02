@@ -23,7 +23,8 @@
             <p class="card-text text-end"> {{ school.contactPhone }} </p>
             {% if admin %}
             <p>
-                <a href="#" class="btn btn-warning"> Редактировать </a>
+                <a href="{% url 'edit_school' pk=admin.pk pk_school=admin.school.pk %}" class="btn btn-warning">
+                    Редактировать </a>
             </p>
             {% endif %}
         </div>

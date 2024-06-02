@@ -10,10 +10,10 @@
         <tr>
             <td></td>
             <td></td>
-            <td><p class="h4">Список учителей</p></td>
+            <td><p class="h4">Список уроков в расписании</p></td>
             <td></td>
             <td></td>
-            <td></td>
+            <td><p><a href="{% url 'admin_post_lesson' admin.pk %}">Добавить</a></p></td>
         </tr>
         <tr>
             <td><p class="h6">Расписание</p></td>
@@ -41,12 +41,12 @@
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Редактировать </a>
+                    <a href="{% url 'admin_edit_lesson' admin.pk schedule.lesson.pk %}" class="btn btn-warning"> Редактировать </a>
                 </p>
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Удалить </a>
+                    <a href="{% url 'admin_delete_lesson' admin.pk schedule.lesson.pk %}" class="btn btn-warning"> Удалить </a>
                 </p>
             </td>
         </tr>
