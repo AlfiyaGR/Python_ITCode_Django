@@ -23,8 +23,9 @@ urlpatterns = [
     path('marks/<int:pk>/', views.MarkDetail.as_view(), name='marks'),
     path('lessons/<int:pk>/', views.LessonDetail.as_view(), name='lessons'),
     path('homeworks/<int:pk>/', views.HomeworkList.as_view(), name='homeworks'),
-
     path('teacher/lesson/<int:pk>/post/', views.post_lesson, name='post_lesson'),
+    path('mark/<int:pk>/<int:pk_hw>/edit/', views.edit_mark, name='edit_mark'),
+
 
     # личный кабинет ученика
     path('student/<int:pk>/', views.StudentDetail.as_view(), name='student'),

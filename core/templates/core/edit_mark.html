@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Оценка</label><br>
+            <select name="mark">
+            {% for item in marks %}
+                <option value="{{item}}"
+                {% if homework.mark.mark == item %}
+                  selected
+                {% endif %}
+            >{{item}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        <input type="submit" value="Сохранить" >
+    </form>
+</div>
+{% endblock %}
