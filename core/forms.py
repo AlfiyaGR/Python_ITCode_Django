@@ -25,6 +25,25 @@ class PostAdmin(forms.ModelForm):
         model = models.Administrator
         fields = ('surname', 'name', 'lastname', 'phone', 'email', 'login', 'password', 'school')
 
+
+class PostGroup(forms.ModelForm):
+    class Meta:
+        model = models.Group
+        fields = ('name', 'teacher')
+
+
+class PostStudent(forms.ModelForm):
+    class Meta:
+        model = models.Student
+        fields = ('surname', 'name', 'lastname', 'phone', 'email', 'login', 'password', 'group')
+
+
+class PostHomework(forms.ModelForm):
+    class Meta:
+        model = models.Homework
+        fields = ('description', 'file')
+
+
 """
 class PostLesson(forms.Form):
 

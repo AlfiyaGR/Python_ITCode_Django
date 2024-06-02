@@ -20,7 +20,11 @@
                     <p class="card-text"> {{ lesson.subject.name }} </p>
                     <p>Материалы по уроку: </p>
                     <p class="card-text"> {{ lesson.description }} </p>
-                    <p class="card-text"> {{ lesson.file }} </p>
+                    {% if lesson.file %}
+                    <p class="card-text">
+                        <a href="#" class="btn btn-primary"> Файл PDF </a>
+                    </p>
+                    {% endif %}
                     <p class="card-text">
                         <a href="#" class="btn btn-primary"> Подключиться к уроку/Посмотреть запись </a>
                     </p>
