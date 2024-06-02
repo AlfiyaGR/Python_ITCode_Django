@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 import datetime
 from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import TemplateView, ListView, DetailView, RedirectView, FormView
 from core import models
 from .forms import *
@@ -250,6 +251,43 @@ class HomeworkList(ListView):
 """ Личный кабинет ученика """
 
 
+def post_homework(request, pk, pk_lesson):
+    student = models.Student.objects.get(pk=pk)
+    lesson = models.Lesson.objects.get(pk=pk_lesson)
+    subject = models.Subject.objects.get(pk=lesson.subject.pk)
+
+    if request.method == "POST":
+        form = PostHomework(request.POST)
+
+        if form.is_valid():
+            mark = models.Mark()
+            mark.mark = 'выдано'
+            mark.student = student
+            mark.subject = subject
+            mark.save()
+
+            homework = form.save(commit=False)
+            homework.date = timezone.now()
+            homework.lesson = lesson
+            homework.student = student
+            homework.mark = mark
+            homework.save()
+            return redirect('stud_homeworks', pk=student.pk, lesson_pk=pk_lesson)
+    else:
+        form = PostHomework()
+    return render(request, 'core/post_edit.html', {'form': form, 'student': student})
+
+
+def delete_homework(request, pk, pk_homework):
+    try:
+        student = models.Student.objects.get(pk=pk)
+        homework = models.Homework.objects.get(pk=pk_homework)
+        homework.delete()
+        return redirect('stud_schedule', pk=student.pk)
+    except models.Subject.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
 # Расписание ученика
 class StudScheduleList(ListView):
     model = models.Student
@@ -425,6 +463,113 @@ def delete_subject(request, pk, pk_subject):
         subject = models.Subject.objects.get(pk=pk_subject)
         subject.delete()
         return redirect('subjects', pk=admin.pk)
+    except models.Subject.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
+def post_group(request, pk):
+    admin = models.Administrator.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = PostGroup(request.POST)
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.school = models.School(pk=admin.school.pk)
+            group.save()
+            return redirect('groups', pk=admin.pk)
+    else:
+        form = PostGroup()
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def edit_group(request, pk, pk_group):
+    admin = models.Administrator.objects.get(pk=pk)
+    group = get_object_or_404(models.Group, pk=pk_group)
+
+    if request.method == "POST":
+        form = PostGroup(request.POST, instance=group)
+
+        if form.is_valid():
+            group = form.save(commit=False)
+            group.save()
+            return redirect('groups', pk=admin.pk)
+    else:
+        form = PostGroup(instance=group)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+# Список учеников класса ученика
+class AdminGroupDetail(DetailView):
+    model = models.Administrator
+    template_name = 'core/admin_group.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        admin = models.Administrator.objects.get(pk=self.kwargs['pk'])
+        group = models.Group.objects.get(pk=self.kwargs['pk_group'])
+        group_master = models.Teacher.objects.get(pk=group.teacher.pk)
+
+        try:
+            students = models.Student.objects.filter(group=group.pk)
+            context['students'] = students
+            context['group'] = group
+            context['admin'] = admin
+            context['group_master'] = group_master
+            return context
+
+        except models.Student.DoesNotExist:
+            context['group'] = group
+            context['admin'] = admin
+            return context
+
+
+def delete_group(request, pk, pk_group):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        group = models.Group.objects.get(pk=pk_group)
+        group.delete()
+        return redirect('groups', pk=admin.pk)
+    except models.Subject.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
+def post_student(request, pk):
+    admin = models.Administrator.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = PostStudent(request.POST)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.save()
+            return redirect('groups', pk=admin.pk)
+    else:
+        form = PostStudent()
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def edit_student(request, pk, pk_student):
+    admin = models.Administrator.objects.get(pk=pk)
+    student = get_object_or_404(models.Student, pk=pk_student)
+
+    if request.method == "POST":
+        form = PostStudent(request.POST, instance=student)
+
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.save()
+            return redirect('groups', pk=admin.pk)
+    else:
+        form = PostStudent(instance=student)
+    return render(request, 'core/post_edit.html', {'form': form, 'admin': admin})
+
+
+def delete_student(request, pk, pk_student):
+    try:
+        admin = models.Administrator.objects.get(pk=pk)
+        student = models.Student.objects.get(pk=pk_student)
+        student.delete()
+        return redirect('groups', pk=admin.pk)
     except models.Subject.DoesNotExist:
         return HttpResponseNotFound("<h2>Not found</h2>")
 

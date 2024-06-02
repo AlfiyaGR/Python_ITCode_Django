@@ -26,7 +26,6 @@ urlpatterns = [
     path('teacher/lesson/<int:pk>/post/', views.post_lesson, name='post_lesson'),
     path('mark/<int:pk>/<int:pk_hw>/edit/', views.edit_mark, name='edit_mark'),
 
-
     # личный кабинет ученика
     path('student/<int:pk>/', views.StudentDetail.as_view(), name='student'),
     path('stud_schedule/<int:pk>/', views.StudScheduleList.as_view(), name='stud_schedule'),
@@ -35,6 +34,9 @@ urlpatterns = [
     path('stud_marks/<int:pk>/', views.StudMarkDetail.as_view(), name='stud_marks'),
     path('stud_lessons/<int:pk>/<int:lesson_pk>', views.StudLessonDetail.as_view(), name='stud_lessons'),
     path('stud_homeworks/<int:pk>/<int:lesson_pk>', views.StudHomeworkDetail.as_view(), name='stud_homeworks'),
+
+    path('homework/<int:pk>/<int:pk_lesson>/post/', views.post_homework, name='post_homework'),
+    path('homework/<int:pk>/<int:pk_homework>/delete/', views.delete_homework, name='delete_homework'),
 
     # личный кабинет администратора
     path('administrator/<int:pk>/', views.AdminDetail.as_view(), name='administrator'),
@@ -59,6 +61,15 @@ urlpatterns = [
     path('lesson/<int:pk>/post/', views.post_lesson_admin, name='admin_post_lesson'),
     path('lesson/<int:pk>/<int:pk_lesson>/edit/', views.edit_lesson_admin, name='admin_edit_lesson'),
     path('lesson/<int:pk>/<int:pk_lesson>/delete/', views.delete_lesson, name='admin_delete_lesson'),
+
+    path('group/<int:pk>/post/', views.post_group, name='post_group'),
+    path('group/<int:pk>/<int:pk_group>/edit/', views.edit_group, name='edit_group'),
+    path('group/<int:pk>/<int:pk_group>/details/', views.AdminGroupDetail.as_view(), name='group_details'),
+    path('group/<int:pk>/<int:pk_group>/delete/', views.delete_group, name='delete_group'),
+
+    path('student/<int:pk>/post/', views.post_student, name='post_student'),
+    path('student/<int:pk>/<int:pk_student>/edit/', views.edit_student, name='edit_student'),
+    path('student/<int:pk>/<int:pk_student>/delete/', views.delete_student, name='delete_student'),
 
     # все остальное
     path('redirect/', views.RedirectAdmin.as_view(), name='redirect'),

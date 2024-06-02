@@ -12,10 +12,12 @@
             <td><p class="h4">Список классов</p></td>
             <td></td>
             <td></td>
+            <td><a href="{% url 'post_group' admin.pk %}" class="btn btn-warning"> Добавить </a></td>
         </tr>
         <tr>
             <td><p class="h6">Класс</p></td>
             <td><p class="h6">Классный руководитель</p></td>
+            <td></td>
             <td></td>
             <td></td>
         </tr>
@@ -29,12 +31,17 @@
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Редактировать </a>
+                    <a href="{% url 'group_details' admin.pk group.pk %}" class="btn btn-warning"> Список учеников </a>
                 </p>
             </td>
             <td>
                 <p>
-                    <a href="#" class="btn btn-warning"> Удалить </a>
+                    <a href="{% url 'edit_group' admin.pk group.pk %}" class="btn btn-warning"> Редактировать </a>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <a href="{% url 'delete_group' admin.pk group.pk %}" class="btn btn-warning"> Удалить </a>
                 </p>
             </td>
         </tr>

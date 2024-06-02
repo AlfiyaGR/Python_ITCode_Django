@@ -12,7 +12,7 @@
 <div class="col-md-9">
     {% if student %}
     <p class="card-text">
-        <a href="{% url 'stud_lessons' student.pk lesson.pk %}" class="btn btn-primary"> Назад </a>
+        <a href="{% url 'post_homework' student.pk lesson.pk %}" class="btn btn-primary"> Добавить </a>
     </p>
     {% endif %}
     <div class="row row-cols-1 row-cols-md-2 п-4">
@@ -25,14 +25,20 @@
                     <h5 class="card-title"> {{ lesson.subject.name }} </h5>
                     <p class="card-text"> {{ lesson.date }} </p>
                     <p class="card-text"> {{ homework.description }} </p>
-                    <p class="card-text"> {{ homework.file }} </p>
-                    <p class="card-text"> {{ homework.mark }} </p>
+                    {% if homework.file %}
+                    <p class="card-text">
+                        <a href="#" class="btn btn-primary"> Файл PDF </a>
+                    </p>
+                    {% endif %}
+                    <p class="card-text"> Оценка: {{ homework.mark.mark }} </p>
                     {% if teacher %}
                     <p class="card-text">
                         <a href="{% url 'edit_mark' teacher.pk homework.pk %}" class="btn btn-primary"> Оценить </a>
                     </p>
                     {% elif student %}
-                    <p class="card-text"> Оценка: {{ homework.mark.mark }} </p>
+                    <p class="card-text">
+                        <a href="{% url 'delete_homework' student.pk homework.pk %}" class="btn btn-primary"> Удалить </a>
+                    </p>
                     {% endif %}
                 </div>
             </div>

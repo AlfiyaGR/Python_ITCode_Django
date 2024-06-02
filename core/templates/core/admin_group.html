@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_admin_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <p>
+        <a href="{% url 'post_student' admin.pk %}" class="btn btn-warning"> Добавить </a>
+    </p>
+    <h1>{{ group.name }}</h1>
+    <div class="card text-bg-success mb-3" style="max-width: 40rem;">
+        <div class="card-header"> Классный руководитель</div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ group_master.surname }} {{ group_master.name }} </h5>
+            <p class="card-text text-end">Почта: {{ group_master.email }} </p>
+            <p class="card-text text-end">Телефон: {{ group_master.phone }} </p>
+        </div>
+    </div>
+    {% if students %}
+    {% for student in students %}
+    <div class="card text-bg-warning mb-3" style="max-width: 40rem;">
+        <div class="card-header"> {{ student.surname }} {{ student.name }}</div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ student.surname }} {{ student.name }} </h5>
+            <p class="card-text text-end">Почта: {{ student.email }} </p>
+            <p class="card-text text-end">Телефон: {{ student.phone }} </p>
+            <p>
+                <a href="{% url 'edit_student' admin.pk student.pk %}" class="btn btn-success"> Редактировать </a>
+            </p>
+            <p>
+                <a href="{% url 'delete_student' admin.pk student.pk %}" class="btn btn-success"> Удалить </a>
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
+
