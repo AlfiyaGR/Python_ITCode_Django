@@ -18,7 +18,11 @@
             <td></td>
             <td><p class="h4">Расписание</p></td>
             <td></td>
+            {% if teacher %}
+            <td><p><a href="{% url 'post_lesson' teacher.pk %}">Добавить</a></p></td>
+            {% elif student %}
             <td></td>
+            {% endif %}
         </tr>
         {% for schedule in schedules %}
         <tr>

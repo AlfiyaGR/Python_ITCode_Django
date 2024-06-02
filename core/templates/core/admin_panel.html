@@ -15,7 +15,7 @@
             <p class="card-text text-end"> Телефон: </p>
             <p class="card-text text-end"> {{ admin.phone }} </p>
             <p>
-                <a href="#" class="btn btn-warning"> Редактировать </a>
+                <a href="{% url 'edit_admin' pk=admin.pk %}" class="btn btn-warning"> Редактировать </a>
             </p>
         </div>
     </div>

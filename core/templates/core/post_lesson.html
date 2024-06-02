@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% if teacher %}
+{% include 'inc/_teacher_sidebar.html' %}
+{% elif admin %}
+{% include 'inc/_admin_sidebar.html' %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="col-md-9">
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Введите название урока</label><br>
+            <input type="text" name="name" />
+        </p>
+        <p>
+            <label>День недели</label><br>
+            <select name="schedule">
+            {% for schedule in schedules %}
+                <option value="{{schedule}}">{{schedule}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label>Введите дату</label><br>
+            <input type="datetime-local" name="date" />
+        </p>
+        <p>
+            <label>Введите описание</label><br>
+            <input type="text" name="description" />
+        </p>
+        <p>
+            <label>Прикрепить файл</label><br>
+            <input type="file" name="file" />
+        </p>
+        <p>
+            <label>Введите предмет</label><br>
+            <select name="subject">
+            {% for subject in subjects %}
+                <option value="{{subject.pk}}">{{subject.name}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label>Введите класс</label><br>
+            <select name="group">
+            {% for group in groups_schedule %}
+                <option value="{{group.pk}}">{{group.name}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        {% if admin %}
+        <p>
+            <label>Выберите учителя</label><br>
+            <select name="teacher">
+            {% for teacher in teachers %}
+                <option value="{{teacher.pk}}">{{teacher}}</option>
+            {% endfor %}
+            </select>
+        </p>
+        {% endif %}
+        <input type="submit" value="Сохранить" >
+    </form>
+</div>
+{% endblock %}
