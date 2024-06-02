@@ -88,6 +88,35 @@ def post_lesson(request, pk):
                    'teacher': teacher})
 
 
+def edit_mark(request, pk, pk_hw):
+    try:
+        teacher = models.Teacher.objects.get(pk=pk)
+        groups = models.Group.objects.filter(teacher=teacher.pk)
+        homework = models.Homework.objects.get(pk=pk_hw)
+
+        subject = models.Subject.objects.get(pk=homework.lesson.subject.pk)
+        student = models.Student.objects.get(pk=homework.student.pk)
+        marks = ['выдано', '1', '2', '3', '4', '5']
+
+        if request.method == "POST":
+            mark = models.Mark.objects.get(pk=homework.mark.pk)
+            mark.mark = request.POST.get('mark')
+            mark.student = student
+            mark.subject = subject
+            mark.save()
+
+            homework.mark = mark
+            homework.save()
+
+            return redirect('homeworks', pk=homework.lesson.pk)
+
+        return render(request, 'core/edit_mark.html',
+                      {'teacher': teacher, 'groups': groups, 'marks': marks, 'homework': homework})
+
+    except models.Lesson.DoesNotExist:
+        return HttpResponseNotFound("<h2>Not found</h2>")
+
+
 # Расписание учителя
 class ScheduleList(ListView):
     model = models.Teacher
