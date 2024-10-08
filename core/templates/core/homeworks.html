@@ -25,11 +25,9 @@
                     <h5 class="card-title"> {{ lesson.subject.name }} </h5>
                     <p class="card-text"> {{ lesson.date }} </p>
                     <p class="card-text"> {{ homework.description }} </p>
-                    {% if homework.file %}
                     <p class="card-text">
                         <a href="#" class="btn btn-primary"> Файл PDF </a>
                     </p>
-                    {% endif %}
                     <p class="card-text"> Оценка: {{ homework.mark.mark }} </p>
                     {% if teacher %}
                     <p class="card-text">
