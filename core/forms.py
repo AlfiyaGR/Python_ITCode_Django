@@ -43,17 +43,3 @@ class PostHomework(forms.ModelForm):
         model = models.Homework
         fields = ('description', 'file')
 
-
-"""
-class PostLesson(forms.Form):
-
-    class Meta:
-        model = models.Lesson
-        fields = ('name', 'date', 'description', 'file', 'subject')
-
-
-class PostSchedule(forms.ModelForm):
-    class Meta:
-        model = models.Schedule
-        fields = ('group',)
-"""
